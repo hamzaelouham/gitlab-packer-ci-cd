@@ -40,8 +40,11 @@ packer-validate-nginx:
 packer-build-mysql:
   stage: deploy
   script:
-    - echo "packer build-deploy mysql..."
-    - packer build -force "$WORKDIR/mysql/" build.json
+     - echo "packer validate mysql..."
+
+     - cd mysql
+    
+     - packer build -force build.json
   only:
     - main
     - tags
@@ -50,8 +53,11 @@ packer-build-mysql:
 packer-build-nginx:
   stage: deploy
   script:
-    - echo "packer build-deploy nginx..."
-    - packer build -force "$WORKDIR/nginx/" build.json
+     - echo "packer validate mysql..."
+
+     - cd mysql
+    
+     - packer build -force build.json
   only:
     - main
     - tags
