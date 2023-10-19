@@ -17,7 +17,7 @@ packer-validate:
 
   script:
     - echo "packer validate ... "
-
+    - echo "$WORKDIR/$OS_PATH" 
     - packer validate "$WORKDIR/$OS_PATH" .
 
   only:
