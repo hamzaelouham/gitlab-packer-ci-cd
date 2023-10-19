@@ -15,10 +15,10 @@ packer-build:
   stage: deploy
 
   before_script:
-
+    - echo "packer validate ... "
     - packer validate "$workdir/$ospath" .
   script:
-
+    - echo "packer build-deploy ... "
     - packer build -force "$workdir/$ospath" .
 
   only:
