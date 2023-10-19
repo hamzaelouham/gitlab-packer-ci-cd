@@ -1,0 +1,22 @@
+{
+    "builders": [
+        {
+            "type": "docker",
+            "image": "debian:bullseye-slim",
+            "commit": true
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": [
+                "groupadd -r mysql && useradd -r -g mysql mysql",
+                "apt-get update && apt-get install -y --no-install-recommends gnupg && rm -rf /var/lib/apt/lists/*"
+            ]
+        },
+        {
+            "type": "shell",
+            "script": "setup.sh"
+        }
+    ]
+}
