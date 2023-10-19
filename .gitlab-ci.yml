@@ -15,8 +15,11 @@ packer-validate-mysql:
   stage: validate
   script:
     - echo "packer validate mysql..."
-    - echo "$WORKDIR/mysql/"
-    - packer validate "$WORKDIR/mysql/" .
+
+    - cd mysql
+    
+    - packer validate  .
+  
   only:
     - main
     - test
@@ -25,8 +28,11 @@ packer-validate-nginx:
   stage: validate
   script:
     - echo "packer validate nginx..."
-    - echo "$WORKDIR/nginx/"
-    - packer validate "$WORKDIR/nginx/" .
+   
+    - cd nginix
+   
+    - packer validate  .
+  
   only:
     - main
     - test
