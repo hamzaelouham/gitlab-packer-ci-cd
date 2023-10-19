@@ -1,1 +1,0 @@
- packer build -var-file variables.json build.json
