@@ -9,20 +9,42 @@ image:
     - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 
 stages:
+  - validate
   - deploy
+
+packer-validate:
+  stage: validate
+
+  script:
+    - echo "packer validate ... "
+    - packer validate "$workdir/$ospath" .
+
+  only:
+    - main
+    - test
+
+mysql:
+    extends: packer-validate
+    variables:
+        ospath: "$SCRIPT_PATH/mysql/"  
+
+nginix:
+    extends: packer-validate
+    variables:
+        ospath: "$SCRIPT_PATH/nginix/" 
+    
 
 packer-build:
   stage: deploy
 
-  before_script:
-    - echo "packer validate ... "
-    - packer validate "$workdir/$ospath" .
   script:
     - echo "packer build-deploy ... "
     - packer build -force "$workdir/$ospath" .
 
   only:
     - main
+    - tags
+  when: manual  
 
 mysql:
     extends: packer-build
@@ -33,4 +55,4 @@ nginix:
     extends: packer-build
     variables:
         ospath: "$SCRIPT_PATH/nginix/" 
-
+  
