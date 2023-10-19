@@ -18,7 +18,7 @@ packer-validate-mysql:
 
     - cd mysql
     
-    - packer validate  .
+    - packer validate  build.json
   
   only:
     - main
@@ -29,9 +29,9 @@ packer-validate-nginx:
   script:
     - echo "packer validate nginx..."
    
-    - cd nginix
+    - cd nginix 
    
-    - packer validate  .
+    - packer validate  build.json
   
   only:
     - main
