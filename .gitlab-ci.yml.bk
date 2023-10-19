@@ -1,0 +1,60 @@
+variables:
+  WORKDIR: "${CI_PROJECT_DIR}"
+  OS_PATH: ""
+
+image:
+  name: hashicorp/packer
+  entrypoint:
+    - '/usr/bin/env'
+    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
+stages:
+  - validate
+  - deploy
+
+packer-validate:
+  stage: validate
+
+  script:
+    - echo "packer validate ... "
+    - echo "$WORKDIR/$OS_PATH" 
+    - packer validate "$WORKDIR/$OS_PATH" .
+
+  only:
+    - main
+    - test
+
+mysql:
+    extends: packer-validate
+    variables:
+        OS_PATH: "mysql/"  
+
+nginix:
+    extends: packer-validate
+    variables:
+        OS_PATH: "nginix/" 
+    
+
+packer-build:
+  stage: deploy
+
+  script:
+    - echo "packer build-deploy ... "
+
+    - packer build -force ${WORKDIR}/${OS_PATH} build.json
+
+  only:
+    - main
+    - tags
+  when: manual  
+
+mysql:
+    extends: packer-build
+    variables:
+        OS_PATH: "$WORKDIR/mysql/"  
+
+nginix:
+    extends: packer-build
+    variables:
+        OS_PATH: "$WORKDIR/nginix/" 
+  

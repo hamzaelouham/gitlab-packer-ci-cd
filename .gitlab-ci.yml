@@ -1,6 +1,5 @@
 variables:
   WORKDIR: "${CI_PROJECT_DIR}"
-  OS_PATH: ""
 
 image:
   name: hashicorp/packer
@@ -12,49 +11,42 @@ stages:
   - validate
   - deploy
 
-packer-validate:
+packer-validate-mysql:
   stage: validate
-
   script:
-    - echo "packer validate ... "
-    - echo "$WORKDIR/$OS_PATH" 
-    - packer validate "$WORKDIR/$OS_PATH" .
-
+    - echo "packer validate mysql..."
+    - echo "$WORKDIR/mysql/"
+    - packer validate "$WORKDIR/mysql/" .
   only:
     - main
     - test
 
-mysql:
-    extends: packer-validate
-    variables:
-        OS_PATH: "mysql/"  
-
-nginix:
-    extends: packer-validate
-    variables:
-        OS_PATH: "nginix/" 
-    
-
-packer-build:
-  stage: deploy
-
+packer-validate-nginx:
+  stage: validate
   script:
-    - echo "packer build-deploy ... "
+    - echo "packer validate nginx..."
+    - echo "$WORKDIR/nginx/"
+    - packer validate "$WORKDIR/nginx/" .
+  only:
+    - main
+    - test
 
-    - packer build -force ${WORKDIR}/${OS_PATH} build.json
-
+packer-build-mysql:
+  stage: deploy
+  script:
+    - echo "packer build-deploy mysql..."
+    - packer build -force "$WORKDIR/mysql/" build.json
   only:
     - main
     - tags
-  when: manual  
+  when: manual
 
-mysql:
-    extends: packer-build
-    variables:
-        OS_PATH: "$WORKDIR/mysql/"  
-
-nginix:
-    extends: packer-build
-    variables:
-        OS_PATH: "$WORKDIR/nginix/" 
-  
+packer-build-nginx:
+  stage: deploy
+  script:
+    - echo "packer build-deploy nginx..."
+    - packer build -force "$WORKDIR/nginx/" build.json
+  only:
+    - main
+    - tags
+  when: manual
