@@ -17,7 +17,7 @@ packer-validate:
 
   script:
     - echo "packer validate ... "
-    - packer validate "$workdir/$ospath" .
+    - packer validate "$workdir/$ospath"  build.json
 
   only:
     - main
@@ -39,7 +39,7 @@ packer-build:
 
   script:
     - echo "packer build-deploy ... "
-    - packer build -force "$workdir/$ospath" .
+    - packer build -force "$workdir/$ospath" build.json
 
   only:
     - main
