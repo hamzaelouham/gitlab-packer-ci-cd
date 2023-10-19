@@ -1,6 +1,6 @@
 variables:
-  workdir: "${CI_PROJECT_DIR}"
-  ospath: ""
+  WORKDIR: "${CI_PROJECT_DIR}"
+  OS_PATH: ""
 
 image:
   name: hashicorp/packer
@@ -17,7 +17,7 @@ packer-validate:
 
   script:
     - echo "packer validate ... "
-    - packer validate "$workdir/$ospath"  build.json
+    - packer validate "$WORKDIR/$OS_PATH"  .
 
   only:
     - main
@@ -26,12 +26,12 @@ packer-validate:
 mysql:
     extends: packer-validate
     variables:
-        ospath: "$SCRIPT_PATH/mysql/"  
+        ospath: "$WORKDIR/mysql/"  
 
 nginix:
     extends: packer-validate
     variables:
-        ospath: "$SCRIPT_PATH/nginix/" 
+        ospath: "$WORKDIR/nginix/" 
     
 
 packer-build:
@@ -39,7 +39,7 @@ packer-build:
 
   script:
     - echo "packer build-deploy ... "
-    - packer build -force "$workdir/$ospath" build.json
+    - packer build -force "$WORKDIR/$OS_PATH" build.json
 
   only:
     - main
@@ -49,10 +49,10 @@ packer-build:
 mysql:
     extends: packer-build
     variables:
-        ospath: "$SCRIPT_PATH/mysql/"  
+        ospath: "$WORKDIR/mysql/"  
 
 nginix:
     extends: packer-build
     variables:
-        ospath: "$SCRIPT_PATH/nginix/" 
+        ospath: "$WORKDIR/nginix/" 
   
