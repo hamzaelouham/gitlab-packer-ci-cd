@@ -17,7 +17,10 @@ packer-validate:
 
   script:
     - echo "packer validate ... "
-    - packer validate "$WORKDIR/$OS_PATH"  .
+
+    - echo "packer build -force ${WORKDIR}/${OS_PATH} build.json"
+
+    - packer validate "$WORKDIR/$OS_PATH" 
 
   only:
     - main
@@ -39,6 +42,7 @@ packer-build:
 
   script:
     - echo "packer build-deploy ... "
+
     - packer build -force ${WORKDIR}/${OS_PATH} build.json
 
   only:
