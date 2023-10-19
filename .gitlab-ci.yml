@@ -39,7 +39,7 @@ packer-build:
 
   script:
     - echo "packer build-deploy ... "
-    - packer build -force "$WORKDIR/$OS_PATH" build.json
+    - packer build -force ${WORKDIR}/${OS_PATH} build.json
 
   only:
     - main
